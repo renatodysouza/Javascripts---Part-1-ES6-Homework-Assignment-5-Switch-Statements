@@ -5,21 +5,25 @@
  * 
  */
 
+ let val1;
+ let val2;
+ let output;
+ const labels = [
+    "seconds",
+    "minutes",
+    "hours",
+    "days",
+    "second",
+    "minute",
+    "hour",
+    "day"
+ ];
+ 
 function timeAdder(value1, label1, value2, label2) {
-    const val1 = value1 >= 0 ? value1 : false;
-    const val2 = value2 >= 0 ? value2 : false; 
-    const labels = [
-       "seconds",
-       "minutes",
-       "hours",
-       "days",
-       "second",
-       "minute",
-       "hour",
-       "day"
-    ];
-    const lab1 = labels.includes(label1);
-    const lab2 = labels.includes(label2);
+    verifyAllParamIsPresent(value1, label1, value2, label2);
+    verifyIfParamIsValid(value1, value2);
+    verifyPresentInLabel(label1, label2);
+    if(output) return output;   
 
     switch (true) {
         case value1 > 1 && label1 == 'minute':
@@ -43,23 +47,9 @@ function timeAdder(value1, label1, value2, label2) {
         case value1 > 1 && label1 == 'second':
             return 'Verify if parameter is singular or plural';      
     }
-
-    if(!val1 | !val2 ) {
-        return 'The value should be a positive number';
-    }
-    if( !lab1 | !lab2 ){
-        return 'The value should be seconds, minutes, hours, days, second, minute, hour, day';
-    }
     
-    let result;
-    let resArray = [];
-
-    if(label1 == label2 ) {
-        result = value1 + value2;
-        resArray = [result, label1];
-        return resArray;
-
-    }
+    timeLabelEquals(label1, label2);
+   
     if(label1 == 'hours' || label1 == 'hour' &&  label2 == 'minutes'  || label1 == 'minute'  ) {
         result = value1 * 60 + value2;
         resArray = [result, label2];
@@ -86,10 +76,48 @@ function timeAdder(value1, label1, value2, label2) {
         resArray = [result, label2];
         return resArray;
     }
+
+    return output;
            
 }
 
-const timeAdd = timeAdder(1,'seconds', 3, 'minutes');
+function verifyAllParamIsPresent(value1,value2,label1,label2) {
+    if(!value1 || !value2 || !label1 || !label2){
+        output = 'Should be four parameters';
+    }
+}
 
+function verifyIfParamIsValid(value1,value2) {
+    if(value1 < 0 || value2 < 0 ) {
+        output = 'The value should be a positive number';
+    }
+}
+
+function verifyPresentInLabel(label1, label2) {
+    const lab1 = labels.includes(label1);
+    const lab2 = labels.includes(label2);
+    if( !lab1 | !lab2 ){
+        output = 'The value should be seconds, minutes, hours, days, second, minute, hour, day';
+    }
+};
+
+function timeLabelEquals(value1, label1, value2, label2) {
+    let result;
+    let resArray = [];
+
+    if(label1 == label2 ) {
+        result = value1 + value2;
+        resArray = [result, label1];
+        output = resArray;
+
+    }
+
+}
+
+ // const timeAdd = timeAdder(1,'hour', 3, 'minutes');
+
+ // const timeAdd = timeAdder(2,'hours', 3, 'minutes');
+ // const timeAdd = timeAdder(1,'minutes', 3, 'minutes');
+  const timeAdd = timeAdder(3,'minutes', 3, 'xxxx');
 
 console.log(timeAdd);
